@@ -12,9 +12,7 @@ Principal::Principal(QWidget *parent)
     ui->setupUi(this);
     lienzo = QPixmap(500,500);
     this->dibujar();
-
     ui->outCuadro->setPixmap(lienzo);
-
 }
 
 Principal::~Principal()
@@ -24,12 +22,16 @@ Principal::~Principal()
 
 void Principal::dibujar()
 {
+    ui->lbl_result->clear();
     lienzo.fill(Qt::white);
 
     QPainter painter(&lienzo);
 
     int x = 0;
     int y = 0;
+    height_1 = ui->spinBox->value();
+    height_2 = ui->spinBox_2->value();
+    height_3 = ui->spinBox_3->value();
 
     // Crear un pincel para los bordes
     QPen pincel;
@@ -41,7 +43,7 @@ void Principal::dibujar()
     painter.setPen(pincel);
 
     // Dibujar primera barra
-    painter.drawRect(x+50, y+50,100,400);
+    painter.drawRect(x+50,y+(495-height_1),100,height_1);
 
     // Crear un objeto color para el relleno
     QColor colorRelleno(190,120,162);
@@ -58,7 +60,7 @@ void Principal::dibujar()
     painter.setBrush(colorRelleno);
 
     // Dibujar segunda barra
-    painter.drawRect(x+170, y+200, 100, 250);
+    painter.drawRect(x+170, y+(495-height_2), 100, height_2);
 
     // Creando los colores de la tercera barra
     QColor cRellenoBarra3(253, 253, 115);
@@ -70,9 +72,10 @@ void Principal::dibujar()
     painter.setBrush(cRellenoBarra3);
 
     // Dibujar tercera barra
-    painter.drawRect(x+290,y+350,100,100);
-}
+    painter.drawRect(x+290,y+(495-height_3),100,height_3);
 
+    ui->outCuadro->setPixmap(lienzo);
+}
 
 void Principal::on_actionGuardar_triggered()
 {
@@ -88,5 +91,47 @@ void Principal::on_actionGuardar_triggered()
 
 void Principal::on_pushButton_clicked(bool checked)
 {
+    double result;
+    height_1 = ui->spinBox->value();
+    height_2 = ui->spinBox_2->value();
+    height_3 = ui->spinBox_3->value();
+    result = (height_1 + height_2 + height_3)/3;
+    QPainter painter2(&lienzo);
 
+    QPen pincel1;
+    pincel1.setWidth(4);
+    pincel1.setColor(Qt::magenta);
+    pincel1.setJoinStyle(Qt::MiterJoin);
+
+    // Establecer el pincel al "pintor"
+    painter2.setPen(pincel1);
+    painter2.drawLine(0,495-result,500,495-result);
+    pincel1.setColor(Qt::black);
+    painter2.drawText(250, 492-result, QString::number(result));
+    ui->lbl_result->setText("Promedio: " + QString::number(result));
+    ui->outCuadro->setPixmap(lienzo);
 }
+
+void Principal::on_spinBox_valueChanged(int arg1)
+{
+    dibujar();
+}
+
+
+void Principal::on_spinBox_2_valueChanged(int arg1)
+{
+    dibujar();
+}
+
+
+void Principal::on_spinBox_3_valueChanged(int arg1)
+{
+    dibujar();
+}
+
+
+void Principal::on_actionSalir_triggered()
+{
+    this->close();
+}
+
