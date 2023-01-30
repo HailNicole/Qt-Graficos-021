@@ -18,8 +18,6 @@ public:
 private slots:
     void on_actionGuardar_triggered();
 
-    void on_pushButton_clicked(bool checked);
-
     void on_spinBox_valueChanged(int arg1);
 
     void on_spinBox_2_valueChanged(int arg1);

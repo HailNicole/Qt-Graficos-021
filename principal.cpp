@@ -74,6 +74,22 @@ void Principal::dibujar()
     // Dibujar tercera barra
     painter.drawRect(x+290,y+(495-height_3),100,height_3);
 
+    double result;
+    result = (height_1 + height_2 + height_3)/3;
+
+    QPen pincel1;
+    pincel1.setWidth(4);
+    pincel1.setColor(Qt::magenta);
+    pincel1.setJoinStyle(Qt::MiterJoin);
+
+    // Establecer el pincel al "pintor"
+    painter.setPen(pincel1);
+    painter.drawLine(0,495-result,500,495-result);
+    pincel1.setColor(Qt::black);
+    painter.drawText(250, 492-result, QString::number(result));
+    ui->lbl_result->setText("Promedio: " + QString::number(result));
+    ui->outCuadro->setPixmap(lienzo);
+
     ui->outCuadro->setPixmap(lienzo);
 }
 
@@ -89,28 +105,6 @@ void Principal::on_actionGuardar_triggered()
     }
 }
 
-void Principal::on_pushButton_clicked(bool checked)
-{
-    double result;
-    height_1 = ui->spinBox->value();
-    height_2 = ui->spinBox_2->value();
-    height_3 = ui->spinBox_3->value();
-    result = (height_1 + height_2 + height_3)/3;
-    QPainter painter2(&lienzo);
-
-    QPen pincel1;
-    pincel1.setWidth(4);
-    pincel1.setColor(Qt::magenta);
-    pincel1.setJoinStyle(Qt::MiterJoin);
-
-    // Establecer el pincel al "pintor"
-    painter2.setPen(pincel1);
-    painter2.drawLine(0,495-result,500,495-result);
-    pincel1.setColor(Qt::black);
-    painter2.drawText(250, 492-result, QString::number(result));
-    ui->lbl_result->setText("Promedio: " + QString::number(result));
-    ui->outCuadro->setPixmap(lienzo);
-}
 
 void Principal::on_spinBox_valueChanged(int arg1)
 {
